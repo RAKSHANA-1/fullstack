@@ -1,0 +1,254 @@
+import { useState } from "react";
+
+export default function App() {
+  const [formData, setFormData] = useState({
+    name: "",
+    password: "",
+    email: "",
+    phone: "",
+    address: "",
+    gender: "",
+    conditions: [],
+    department: "",
+    medicalReport: ""
+  });
+
+  const handleChanges = (e) => {
+    const { name, value, type, checked } = e.target;
+    
+    if (name === "conditions") {
+      let updatedConditions = [...formData.conditions];
+      if (checked) {
+        updatedConditions.push(value);
+      } else {
+        updatedConditions = updatedConditions.filter(condition => condition !== value);
+      }
+      setFormData({ ...formData, conditions: updatedConditions });
+      return;
+    }
+    
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Patient Data:", formData);
+    alert("Patient Registered Successfully!\n\n" + JSON.stringify(formData, null, 2));
+    localStorage.setItem('patientData', JSON.stringify(formData));
+  };
+
+  const handleReset = () => {
+    setFormData({
+      name: "", password: "", email: "", phone: "", address: "",
+      gender: "", conditions: [], department: "", medicalReport: ""
+    });
+  };
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundImage: "url('https://images.pexels.com/photos/1250655/pexels-photo-1250655.jpeg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      padding: "20px",
+      fontFamily: "Arial, sans-serif"
+    }}>
+      <form style={{
+        width: "100%",
+        maxWidth: "350px",
+        padding: "25px",
+        background: "rgba(255, 255, 255, 0.95)",
+        border: "1px solid #aaa",
+        borderRadius: "10px",
+        boxShadow: "0 0 20px rgba(0,0,0,0.3)"
+      }} onSubmit={handleSubmit}>
+        
+        <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#333" }}>
+          Patient Registration
+        </h2>
+
+        <div style={{ marginBottom: "15px" }}>
+          <input 
+            type="text" 
+            name="name"
+            placeholder="Patient Name" 
+            value={formData.name}
+            onChange={handleChanges}
+            required 
+            style={{
+              width: "100%", padding: "12px", margin: "5px 0", 
+              border: "1px solid #999", borderRadius: "5px", fontSize: "14px",
+              boxSizing: "border-box"
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <input 
+            type="password" 
+            name="password"
+            placeholder="Create Password" 
+            value={formData.password}
+            onChange={handleChanges}
+            required 
+            style={{
+              width: "100%", padding: "12px", margin: "5px 0", 
+              border: "1px solid #999", borderRadius: "5px", fontSize: "14px",
+              boxSizing: "border-box"
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <input 
+            type="email" 
+            name="email"
+            placeholder="Email" 
+            value={formData.email}
+            onChange={handleChanges}
+            required 
+            style={{
+              width: "100%", padding: "12px", margin: "5px 0", 
+              border: "1px solid #999", borderRadius: "5px", fontSize: "14px",
+              boxSizing: "border-box"
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <input 
+            type="text" 
+            name="phone"
+            placeholder="Phone Number" 
+            value={formData.phone}
+            onChange={handleChanges}
+            required 
+            style={{
+              width: "100%", padding: "12px", margin: "5px 0", 
+              border: "1px solid #999", borderRadius: "5px", fontSize: "14px",
+              boxSizing: "border-box"
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <textarea 
+            name="address"
+            placeholder="Address" 
+            rows="3"
+            value={formData.address}
+            onChange={handleChanges}
+            required
+            style={{
+              width: "100%", padding: "12px", margin: "5px 0", 
+              border: "1px solid #999", borderRadius: "5px", fontSize: "14px",
+              boxSizing: "border-box", resize: "vertical"
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+            Gender:
+          </label>
+          <label style={{ display: "block", margin: "5px 0" }}>
+            <input type="radio" name="gender" value="male" onChange={handleChanges} 
+                   style={{ marginRight: "8px" }} /> Male
+          </label>
+          <label style={{ display: "block", margin: "5px 0" }}>
+            <input type="radio" name="gender" value="female" onChange={handleChanges} 
+                   style={{ marginRight: "8px" }} /> Female
+          </label>
+          <label style={{ display: "block", margin: "5px 0" }}>
+            <input type="radio" name="gender" value="other" onChange={handleChanges} 
+                   style={{ marginRight: "8px" }} /> Other
+          </label>
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+            Known Conditions:
+          </label>
+          <label style={{ display: "block", margin: "5px 0" }}>
+            <input type="checkbox" name="conditions" value="diabetes" 
+                   checked={formData.conditions.includes("diabetes")}
+                   onChange={handleChanges} style={{ marginRight: "8px" }} /> Diabetes
+          </label>
+          <label style={{ display: "block", margin: "5px 0" }}>
+            <input type="checkbox" name="conditions" value="bp" 
+                   checked={formData.conditions.includes("bp")}
+                   onChange={handleChanges} style={{ marginRight: "8px" }} /> BP
+          </label>
+          <label style={{ display: "block", margin: "5px 0" }}>
+            <input type="checkbox" name="conditions" value="asthma" 
+                   checked={formData.conditions.includes("asthma")}
+                   onChange={handleChanges} style={{ marginRight: "8px" }} /> Asthma
+          </label>
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <select 
+            name="department"
+            value={formData.department}
+            onChange={handleChanges}
+            required
+            style={{
+              width: "100%", padding: "12px", margin: "5px 0", 
+              border: "1px solid #999", borderRadius: "5px", fontSize: "14px",
+              boxSizing: "border-box"
+            }}
+          >
+            <option value="">Select Department</option>
+            <option value="general">General Medicine</option>
+            <option value="cardiology">Cardiology</option>
+            <option value="orthopedics">Orthopedics</option>
+            <option value="pediatrics">Pediatrics</option>
+          </select>
+        </div>
+
+        <div style={{ marginBottom: "20px" }}>
+          <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+            Upload Medical Report:
+          </label>
+          <input 
+            type="file" 
+            name="medicalReport"
+            onChange={(e) => setFormData({...formData, medicalReport: e.target.files[0]?.name || ""})}
+            style={{
+              width: "100%", padding: "12px", margin: "5px 0", 
+              border: "1px solid #999", borderRadius: "5px", fontSize: "14px",
+              boxSizing: "border-box"
+            }}
+          />
+        </div>
+
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button 
+            type="button" 
+            onClick={handleReset}
+            style={{
+              flex: 1, padding: "12px", border: "none", 
+              background: "#ff6b6b", color: "white", 
+              borderRadius: "5px", cursor: "pointer", fontSize: "16px", fontWeight: "bold"
+            }}
+          >
+            Reset
+          </button>
+          <button 
+            type="submit"
+            style={{
+              flex: 1, padding: "12px", border: "none", 
+              background: "#007bff", color: "white", 
+              borderRadius: "5px", cursor: "pointer", fontSize: "16px", fontWeight: "bold"
+            }}
+          >
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
